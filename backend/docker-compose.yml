@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: erp_backend
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_PORT: 3306
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: bash -c "bundle install && rails s -b 0.0.0.0"
+
+  db:
+    image: mysql:8.0
+    container_name: erp_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: rails_erp_mini_development
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3399:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

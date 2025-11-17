@@ -1,0 +1,25 @@
+FROM ruby:3.2
+
+# Cài dependencies cho MySQL + Rails
+RUN apt-get update -y && apt-get install -y \
+  build-essential \
+  default-mysql-client \
+  curl \
+  gnupg \
+  && rm -rf /var/lib/apt/lists/*
+
+# Cài Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+  && apt-get install -y nodejs
+
+WORKDIR /app
+
+# Copy Gemfile trước để cache bundle
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+# Copy entire app
+COPY . .
+
+EXPOSE 3000
+CMD ["bash", "-c", "rails s -b 0.0.0.0"]
