@@ -1,0 +1,5 @@
+class Admin::AuthController < ApplicationController
+  layout "auth"
+  def login
+  end
+end

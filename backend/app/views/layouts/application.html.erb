@@ -7,21 +7,33 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <!-- FontAwesome JS-->
+    <%= javascript_include_tag "plugins/fontawesome/js/all.min.js", defer: true %>
+    <!-- App CSS -->
+    <%= stylesheet_link_tag "portal", id: "theme-style" %>
   </head>
-
-  <body>
-    <%= yield %>
+  <body class="app">
+    <%= render "shared/header" %>
+    <!--//app-header-->
+    <div class="app-wrapper">
+      <div class="app-content pt-3 p-md-3 p-lg-4">
+        <%= yield %>
+      </div>
+    </div>
+    <%= render "shared/footer" %>
+	
+    <%= javascript_include_tag "plugins/popper.min", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "plugins/bootstrap/js/bootstrap.min", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "plugins/chart.js/chart.min", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "index-charts", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "app", "data-turbo-track": "reload" %>
   </body>
 </html>
